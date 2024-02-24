@@ -14,6 +14,7 @@ mongoose.connect("mongodb://localhost:27017/cfDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 app.use(bodyParser.json());
 
 // Morgan middleware library to log all requests
@@ -113,26 +114,26 @@ app.post("/users/:Username/movies/:MovieID", async (req, res) => {
 });
 
 //DELETE
-app.delete("/users/:id/:movieTitle", (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    user.favouriteMovies = user.favouriteMovies.filter(
-      (title) => title !== movieTitle
-    );
-    res
-      .status(200)
-      .send(`${movieTitle} has been removed from user ${id}'s array`);
-  } else {
-    res.status(400).send("no such user");
-  }
+app.delete("/users/:Username/movies/:MovieID", async (req, res) => {
+  await Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $pull: { FavoriteMovies: req.params.MovieID },
+    },
+    { new: true }
+  ) // This line makes sure that the updated document is returned
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 // Delete a user by username
 app.delete("/users/:Username", async (req, res) => {
-  await Users.findOneAndRemove({ Username: req.params.Username })
+  await Users.findOneAndDelete({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + " was not found");
@@ -160,42 +161,38 @@ app.get("/movies", (req, res) => {
 
 //READ: Return data about a single movie by title to the user
 app.get("/movies/:Title", async (req, res) => {
-  console.log("Title Parameter:", req.params.Title);
+  await Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
-  try {
-    const movie = await Movie.findOne({ Title: req.params.Title });
-    console.log("Found Movie:", movie);
-    res.json(movie);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error: " + err.message);
-  }
+//READ: Return data about a genre (description) by name/title (e.g., “Thriller”)
+app.get("/movies/genre/:Name", async (req, res) => {
+  await Movies.findOne({ "Genre.Name": req.params.Name })
+    .then((movie) => {
+      res.json(movie.Genre);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //READ
-app.get("/movies/genre/:genreName", (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find((movie) => movie.Genre.Name === genreName).Genre;
-
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(400).send("no such genre");
-  }
-});
-
-//READ
-app.get("/movies/directors/:directorName", (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find(
-    (movie) => movie.Director.Name === directorName
-  ).Director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send("no such director");
-  }
+app.get("/movies/directors/:Name", async (req, res) => {
+  await Movies.findOne({ "Director.Name": req.params.Name })
+    .then((movie) => {
+      res.json(movie.Director);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Welcoming Route
