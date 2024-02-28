@@ -180,7 +180,7 @@ app.delete(
 );
 
 //READ and return all movies at /movies
-app.get("/movies", passport.authenticate("jwt", { sesion: false }),
+app.get("/movies", passport.authenticate("jwt", { session: false }),
   async (req, res) => { Movies.find()
       .then((movies) => {
         res.status(201).json(movies);
