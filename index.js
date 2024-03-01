@@ -241,7 +241,6 @@ app.get(
         res.status(201).json(movies);
       })
       .catch((err) => {
-        ß;
         console.error(err);
         res.status(500).send("Error: " + err);
       });
