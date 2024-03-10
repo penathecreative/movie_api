@@ -232,9 +232,7 @@ app.delete(
 );
 
 //READ and return all movies at /movies
-app.get(
-  "/movies",
-  passport.authenticate("jwt", { session: false }),
+app.get("/movies"),
   async (req, res) => {
     Movies.find()
       .then((movies) => {
@@ -244,8 +242,7 @@ app.get(
         console.error(err);
         res.status(500).send("Error: " + err);
       });
-  }
-);
+  };
 
 //READ: Return data about a single movie by title to the user
 app.get(
