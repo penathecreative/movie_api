@@ -11,7 +11,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 const cors = require("cors");
-app.use(cors("*"));
+app.use(cors());
 const { check, validationResult } = require("express-validator");
 
 mongoose.connect(process.env.CONNECTION_URI, {
