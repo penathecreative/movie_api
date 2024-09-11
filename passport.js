@@ -7,6 +7,9 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
+/**
+ * Log in user
+ */
 passport.use(
   new LocalStrategy(
     {
@@ -34,6 +37,10 @@ passport.use(
     }
   )
 );
+
+/**
+ * Check Token for any authenticated request
+ */
 
 passport.use(
   new JWTStrategy(
