@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>documetation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/public/styles.css">
+
+
 </head>
 
 <body>
@@ -16,10 +20,7 @@
         movies.
     </p>
 
-    <h2>Resource URL</h2>
-    <p>http://localhost:8080/movies</p>
-    <br>
-    <br>
+
     <table>
         <thead>
             <tr class="header">
@@ -41,12 +42,14 @@
             </tr>
             <tr>
                 <td>/users/:id/:movieTitle</td>
-                <td>return´s data (description, genre, director, image URL, whether it’s featured or not) about a single
+                <td>return´s data (description, genre, director, image URL, whether it’s featured or not) about a
+                    single
                     movie by title to the
                     use</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object with data about the movie referring to its Title, Description, Genre, and its Director
+                <td>JSON object with data about the movie referring to its Title, Description, Genre, and its
+                    Director
                 </td>
             </tr>
             <tr>
@@ -94,7 +97,8 @@
                 <td>Allow users to add a movie to their list of favorites (showing only a text that a movie has been
                     added)</td>
                 <td>POST</td>"
-                <td>A JSON object containing the newly added data about a favourite movie of a determined user. Example:
+                <td>A JSON object containing the newly added data about a favourite movie of a determined user.
+                    Example:
                     { "Username": Jane_doe, "Favourite Movie" ["Star Trek"]} </td>
                 <td>Text message informing whether the user added the movie successfully.</td>
             </tr>
