@@ -41,7 +41,6 @@ passport.use(
 /**
  * Check Token for any authenticated request
  */
-
 passport.use(
   new JWTStrategy(
     {
